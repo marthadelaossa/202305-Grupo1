@@ -23,6 +23,9 @@
 
 	<modules>
 		<module>
+			configServer
+		</module>
+		<module>
 			eurekaServer
 		</module>
 		<module>
