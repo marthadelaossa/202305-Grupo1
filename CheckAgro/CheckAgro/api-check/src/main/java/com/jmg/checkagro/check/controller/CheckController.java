@@ -6,6 +6,7 @@ import com.jmg.checkagro.check.controller.response.CheckResponse;
 import com.jmg.checkagro.check.exception.CheckException;
 import com.jmg.checkagro.check.service.CheckPrintService;
 import com.jmg.checkagro.check.service.CheckService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.io.OutputStream;
 import java.util.Map;
 
 
-@RestController
+@Controller
 @RequestMapping("/api/v1/check")
 public class CheckController {
 
