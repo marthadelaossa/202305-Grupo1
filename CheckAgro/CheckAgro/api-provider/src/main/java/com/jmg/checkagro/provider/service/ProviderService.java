@@ -1,5 +1,4 @@
 package com.jmg.checkagro.provider.service;
-
 import com.jmg.checkagro.provider.client.CheckMSClient;
 import com.jmg.checkagro.provider.exception.MessageCode;
 import com.jmg.checkagro.provider.exception.ProviderException;
@@ -8,6 +7,9 @@ import com.jmg.checkagro.provider.repository.ProviderRepository;
 import com.jmg.checkagro.provider.utils.DateTimeUtils;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -70,4 +72,18 @@ public class ProviderService {
     public Provider getById(Long id) throws ProviderException {
         return providerRepository.findByIdAndActive(id, true).orElseThrow(() -> new ProviderException(MessageCode.PROVIDER_NOT_FOUND));
     }
+
+    /*
+    @Retry(name = "retryCheck")
+    @CircuitBreaker(name = "checkSearch", fallbackMethod = "checkSearchFallBack")
+    private Check getById(Long checkId) {
+        var check = CheckMSClient.getById(checkId);
+        return (Check) check;
+    }
+
+    public Check searchCheckFallBack(Long checkId, Throwable t) throws Exception {
+        throw new Exception("Not found Check");
+    }
+    */
+
 }

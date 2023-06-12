@@ -8,8 +8,6 @@ import com.jmg.checkagro.check.service.CheckPrintService;
 import com.jmg.checkagro.check.service.CheckService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;

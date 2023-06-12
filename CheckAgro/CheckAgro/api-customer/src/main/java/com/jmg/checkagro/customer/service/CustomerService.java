@@ -6,8 +6,9 @@ import com.jmg.checkagro.customer.exception.MessageCode;
 import com.jmg.checkagro.customer.model.Customer;
 import com.jmg.checkagro.customer.repository.CustomerRepository;
 import com.jmg.checkagro.customer.utils.DateTimeUtils;
-import feign.Feign;
-import feign.jackson.JacksonEncoder;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,6 +38,10 @@ public class CustomerService {
         return entity.getId();
     }
 
+
+    //circuit breaker:
+    @Retry(name = "retryCustomer")
+    @CircuitBreaker(name = "createCustomer", fallbackMethod = "createCustomerFallBack") //modificar en config
     private void registerCustomerInMSCheck(Customer entity) {
 
         checkMSClient.registerCustomer(CheckMSClient.DocumentRequest.builder()
@@ -44,6 +49,11 @@ public class CustomerService {
                 .documentValue(entity.getDocumentNumber())
                 .build());
     }
+
+    public void registerCustomerInMSCheck(Customer entity, Throwable t) throws Exception {
+        throw new Exception("Not found Check");
+    }
+
 
     private void deleteCustomerInMSCheck(Customer entity) {
         checkMSClient.deleteCustomer(CheckMSClient.DocumentRequest.builder()
@@ -72,4 +82,7 @@ public class CustomerService {
     public Customer getById(String id) throws CustomerException {
         return customerRepository.findByIdAndActive(id, true).orElseThrow(() -> new CustomerException(MessageCode.CUSTOMER_NOT_FOUND));
     }
+
+
+
 }
