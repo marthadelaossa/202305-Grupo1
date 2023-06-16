@@ -21,13 +21,13 @@ public class ProviderEventConsumer {
     }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_PROVIDER_CREADO)
-    public void listen(ProviderEventConsumer.DocumentRequest message){
-        System.out.print("NOMBRE DEL PROVEEDOR "+ message.documentValue);
+    public void listen(ProviderEventConsumer.DocumentRequest DocumentRequest){
+        System.out.print("NOMBRE DEL PROVEEDOR "+ DocumentRequest.documentValue);
         //procesamiento
     }
 
-    public void publishCrearProveedorEvent(ProviderEventConsumer.DocumentRequest message){
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME,RabbitMQConfig.TOPIC_PROVIDER_CREADO,message);
+    public void publishCrearProveedorEvent(ProviderEventConsumer.DocumentRequest entity){
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME,RabbitMQConfig.TOPIC_PROVIDER_CREADO,entity);
     }
 
 
@@ -36,6 +36,7 @@ public class ProviderEventConsumer {
     @Getter
     @Setter
     @Builder
+    public static
     class DocumentRequest {
         @Size(min = 1, max = 10)
         private String documentType;

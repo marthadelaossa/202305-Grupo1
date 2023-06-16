@@ -23,13 +23,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue queueCursoFinalizado(){
+    public Queue queueProviderCreado(){
         return new Queue(QUEUE_PROVIDER_CREADO);
     }
 
     @Bean
     public Binding declareBindingSpecific(){
-        return BindingBuilder.bind(queueCursoFinalizado()).to(appExchange()).with(TOPIC_PROVIDER_CREADO);
+        return BindingBuilder.bind(queueProviderCreado()).to(appExchange()).with(TOPIC_PROVIDER_CREADO);
     }
 
 
